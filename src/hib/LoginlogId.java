@@ -1,7 +1,6 @@
 package hib;
 // Generated Dec 14, 2019 11:35:03 AM by Hibernate Tools 4.3.5.Final
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -28,7 +27,7 @@ public class LoginlogId implements java.io.Serializable {
 		this.userid = userid;
 	}
 
-	public Serializable getLogintime() {
+	public Timestamp getLogintime() {
 		return this.logintime;
 	}
 

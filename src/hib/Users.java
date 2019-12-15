@@ -1,7 +1,6 @@
 package hib;
 // Generated Dec 14, 2019 11:35:03 AM by Hibernate Tools 4.3.5.Final
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
@@ -81,7 +80,7 @@ public class Users implements java.io.Serializable {
 		this.lastName = lastName;
 	}
 
-	public Serializable getDateOfBirth() {
+	public Timestamp getDateOfBirth() {
 		return this.dateOfBirth;
 	}
 
@@ -89,7 +88,7 @@ public class Users implements java.io.Serializable {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-	public Serializable getRegistrationDate() {
+	public Timestamp getRegistrationDate() {
 		return this.registrationDate;
 	}
 

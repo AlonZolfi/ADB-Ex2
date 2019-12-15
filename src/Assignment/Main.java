@@ -1,9 +1,12 @@
+package Assignment;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import hib.Mediaitems;
+import hib.Users;
 
+@SuppressWarnings("unused")
 public class Main {
 	public static void main(String[] args) {
 		//System.out.println(Assignment.isExistUsername("hilalon"));
@@ -15,10 +18,17 @@ public class Main {
 		//System.out.println(Assignment.validateUser("hilalon","1234"));
 		//System.out.println(Assignment.validateAdministrator("admin1","admin1"));
 		//Assignment.insertToHistory("1", "18");
-		Map<String, Date> map = Assignment.getHistory("1");
+		/*Map<String, Date> map = Assignment.getHistory("1");
 		for(Map.Entry<String, Date> ent: map.entrySet()) {
-			System.out.println(ent.getKey()+ent.getValue()+"");
-		}
+			System.out.println(ent.getKey()+" "+ent.getValue()+"");
+		}*/
+		//Assignment.insertToLog("3");
+		//System.out.println(Assignment.getNumberOfRegistredUsers(3));
+		/*List<Users> allUsers = Assignment.getUsers();
+		for (Users user : allUsers) {
+			System.out.println(user.getUserid());
+		}*/
+		//System.out.println(Assignment.getUser("3").getUsername());
 		
 		
 	

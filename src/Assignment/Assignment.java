@@ -1,14 +1,15 @@
+package Assignment;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.hibernate.*;
 import hib.*;
-import javafx.util.converter.LocalDateStringConverter;
 import HibernateUtil.HibernateUtil;
 
 public class Assignment {
@@ -192,19 +193,15 @@ public class Assignment {
 	}
 	
 	private static Map<String, Date> listToMap(List<Object[]> historyData) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss.SSS");
 		Map <String, Date> map = new HashMap<>();
 		for( Object[] obj: historyData) {
-			//map.put(obj[0], new Date(((Timestamp)his.getId().getViewtime()).getTime()));
-			try {
-				Date date = formatter.parse((String) obj[1]);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			System.out.print(obj[1]);
-			
+			map.put((String)obj[0], (Timestamp)obj[1]);			
 		}
-		return map;
+		final Map<String, Date> sortedByCount = map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+		return sortedByCount;
 	}
 
 	public static void insertToLog (String userid) {
@@ -221,7 +218,7 @@ public class Assignment {
 			System.out.println("The insertion to log table was successful " + loginID.getLogintime().toString());
 		}
 		catch(Exception e) {
-
+			e.printStackTrace();
 		}
 		finally {
 			HibernateUtil.closeSession();
@@ -231,19 +228,16 @@ public class Assignment {
 	public static int getNumberOfRegistredUsers(int n) {
 		int user_count = 0;
 		try{
-			Timestamp ts = new Timestamp(System.currentTimeMillis());
-			
-			
-			Session session = HibernateUtil.currentSession();
-			String hqlQuery = 
-					"FROM Users user" + 
-					" WHERE user.REGISTRATION_DATE >= " + "TO_TIMESTAMP("+ts+",'DD-Mon-YYYY HH24-MI-SS') + INTERVAL '" + n + "' DAY";
-			@SuppressWarnings("unchecked")
-			List<Users> users = session.createQuery(hqlQuery).list();
-			user_count =  users.size();
+			Timestamp tmp = new Timestamp(System.currentTimeMillis());
+			Timestamp ts = Timestamp.from(tmp.toInstant().minus(n, ChronoUnit.DAYS));
+			List<Users> users = getUsers();
+			for(Users user: users) {
+				if(user.getRegistrationDate().after(ts))
+					user_count++;
+			}
 		}
 		catch(Exception e) {
-
+			e.printStackTrace();
 		}
 		finally {
 			HibernateUtil.closeSession();
@@ -260,7 +254,7 @@ public class Assignment {
 			users = session.createQuery(hqlQuery).list();
 		}
 		catch(Exception e) {
-
+			e.printStackTrace();
 		}
 		finally {
 			HibernateUtil.closeSession();
@@ -276,7 +270,7 @@ public class Assignment {
 			return user;
 		}
 		catch(Exception e) {
-
+			e.printStackTrace();
 		}
 		finally {
 			HibernateUtil.closeSession();
@@ -284,6 +278,5 @@ public class Assignment {
 		return user;
 		
 	}
-
 
 }
